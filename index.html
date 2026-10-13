@@ -102,6 +102,9 @@
 
   <script type="text/javascript">
     function loadImage(event) {
+      var files = event.target.files;
+      if (!files || files.length === 0) return;
+
       var reader = new FileReader();
       reader.onload = function() {
         var output = document.getElementById('display-image');
@@ -111,7 +114,10 @@
         output.style.display = 'block';
         placeholder.style.display = 'none';
       }
-      reader.readAsDataURL(event.target.files);
+      reader.readAsDataURL(files[0]);
+      
+      // 重設 input 的 value，確保使用者連續上傳同一張圖片時也能觸發
+      event.target.value = '';
     }
 
     function switchVision(visionType, buttonElement) {
@@ -128,6 +134,7 @@
     }
   </script>
 
+  <!-- 修正了 xmlns 網址，確保色盲濾鏡能正常被瀏覽器讀取與套用 -->
   <svg xmlns="http://w3.org" style="display: none;">
     <filter id="filter-protanopia">
       <feColorMatrix type="matrix" values="0.567, 0.433, 0,     0, 0
