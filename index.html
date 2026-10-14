@@ -2,7 +2,7 @@
 <html lang="zh-Hant-TW">
 <head>
   <meta charset="UTF-8">
-  <title>紅綠色盲 UI 圖片檢測與動態切換系統</title>
+  <title>紅綠色盲圖片檢測切換系統</title>
   <style type="text/css">
     body {
       font-family: "Microsoft JhengHei", Arial, sans-serif;
@@ -79,7 +79,7 @@
 <body>
 
   <div class="control-panel">
-    <h2>紅綠色盲 UI 圖片動態檢測系統</h2>
+    <h2>紅綠色盲圖片動態檢測系統</h2>
     
     <div class="upload-box">
       <label for="image-loader" class="file-input-label">📁 點擊此處上傳介面截圖 / 圖片</label>
@@ -87,18 +87,18 @@
     </div>
 
     <div style="margin-top: 15px;">
-      <button class="btn active" onclick="switchVision('normal', this)">👁️ 正常視覺</button>
-      <button class="btn" onclick="switchVision('protanopia', this)">🔴 模擬第一色盲 (紅色盲)</button>
-      <button class="btn" onclick="switchVision('deuteranopia', this)">🟢 模擬第二色盲 (綠色盲)</button>
+      <button class="btn active" onclick="switchVision('normal', this)">正常視覺</button>
+      <button class="btn" onclick="switchVision('protanopia', this)">🔴 模擬紅色色盲</button>
+      <button class="btn" onclick="switchVision('deuteranopia', this)">🟢 模擬綠色色盲</button>
     </div>
   </div>
 
   <div class="image-container" id="container">
-    <div class="placeholder-text" id="placeholder">請先點選上方按鈕，上傳您的 UI 設計稿或網頁截圖</div>
+    <div class="placeholder-text" id="placeholder">請先點選上方按鈕，上傳您的圖片</div>
     <img id="display-image" src="" alt="檢測圖片" style="display: none;">
   </div>
 
-  <p class="hint-text">（本專題系統由標準 HTML5/CSS3/JavaScript 視覺化無障礙技術開發）</p>
+  <p class="hint-text">（本專題系統由標準 HTML5/CSS3/JavaScript 開發）</p>
 
   <script type="text/javascript">
     function loadImage(event) {
@@ -116,7 +116,7 @@
       }
       reader.readAsDataURL(files[0]);
       
-      // 重設 input 的 value，確保使用者連續上傳同一張圖片時也能觸發
+     
       event.target.value = '';
     }
 
@@ -134,7 +134,7 @@
     }
   </script>
 
-  <!-- 修正了 xmlns 網址，確保色盲濾鏡能正常被瀏覽器讀取與套用 -->
+  
   <svg xmlns="http://w3.org" style="display: none;">
     <filter id="filter-protanopia">
       <feColorMatrix type="matrix" values="0.567, 0.433, 0,     0, 0
