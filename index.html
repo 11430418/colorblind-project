@@ -79,17 +79,17 @@
 <body>
 
   <div class="control-panel">
-    <h2>紅綠色盲圖片動態檢測系統</h2>
+    <h2>紅綠色盲圖片檢測系統</h2>
     
     <div class="upload-box">
-      <label for="image-loader" class="file-input-label">📁 點擊此處上傳介面截圖 / 圖片</label>
+      <label for="image-loader" class="file-input-label">點擊此處上傳圖片</label>
       <input type="file" id="image-loader" accept="image/*" onchange="loadImage(event)">
     </div>
 
     <div style="margin-top: 15px;">
       <button class="btn active" onclick="switchVision('normal', this)">正常視覺</button>
-      <button class="btn" onclick="switchVision('protanopia', this)">🔴 模擬紅色色盲</button>
-      <button class="btn" onclick="switchVision('deuteranopia', this)">🟢 模擬綠色色盲</button>
+      <button class="btn" onclick="switchVision('protanopia', this)">紅色色盲</button>
+      <button class="btn" onclick="switchVision('deuteranopia', this)">綠色色盲</button>
     </div>
   </div>
 
@@ -98,7 +98,7 @@
     <img id="display-image" src="" alt="檢測圖片" style="display: none;">
   </div>
 
-  <p class="hint-text">（本專題系統由標準 HTML5/CSS3/JavaScript 開發）</p>
+  <p class="hint-text">（本網頁由標準 HTML5/CSS3/JavaScript 開發）</p>
 
   <script type="text/javascript">
     function loadImage(event) {
