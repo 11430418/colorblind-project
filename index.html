@@ -1,154 +1,242 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
-  <meta charset="UTF-8">
-  <title>紅綠色盲圖片檢測切換系統</title>
-  <style type="text/css">
-    body {
-      font-family: "Microsoft JhengHei", Arial, sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      padding: 20px;
-      color: #333;
-    }
-    .control-panel {
-      background-color: #2c3e50;
-      padding: 20px;
-      border-radius: 8px;
-      text-align: center;
-      max-width: 900px;
-      margin: 0 auto 30px auto;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .control-panel h2 { color: #fff; margin: 0 0 15px 0; font-size: 22px; }
-    .upload-box { margin-bottom: 15px; }
-    .file-input-label {
-      background-color: #27ae60;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      display: inline-block;
-      transition: 0.2s;
-    }
-    .file-input-label:hover { background-color: #219653; }
-    #image-loader { display: none; }
-    .btn {
-      background-color: #7f8c8d;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-size: 15px;
-      font-weight: bold;
-      margin: 0 8px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .btn:hover { background-color: #95a5a6; }
-    .btn.active { background-color: #2980b9; box-shadow: 0 0 8px rgba(41,128,185,0.5); }
-    .image-container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: white;
-      border: 2px dashed #bdc3c7;
-      border-radius: 8px;
-      padding: 20px;
-      text-align: center;
-      min-height: 400px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    #display-image {
-      max-width: 100%;
-      max-height: 600px;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      transition: filter 0.3s ease;
-    }
-    .placeholder-text { color: #7f8c8d; font-size: 18px; font-weight: bold; }
-    .protanopia { filter: url('#filter-protanopia'); -webkit-filter: url('#filter-protanopia'); }
-    .deuteranopia { filter: url('#filter-deuteranopia'); -webkit-filter: url('#filter-deuteranopia'); }
-    .normal { filter: none; -webkit-filter: none; }
-    .hint-text { text-align: center; color: #7f8c8d; margin-top: 20px; font-size: 14px; }
-  </style>
+<meta charset="UTF-8">
+<title>紅綠色盲圖片與鏡頭檢測系統</title>
+<style type="text/css">
+body {
+    font-family: "Microsoft JhengHei", Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+.control-panel {
+    background-color: #2c3e50;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 30px auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.control-panel h2 {
+    color: #fff;
+    margin: 0 0 15px 0;
+    font-size: 22px;
+}
+.upload-box {
+    margin-bottom: 15px;
+}
+.file-input-label {
+    background-color: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+    transition: 0.2s;
+    margin: 0 5px;
+}
+.file-input-label:hover {
+    background-color: #219653;
+}
+.btn-camera {
+    background-color: #e67e22;
+}
+.btn-camera:hover {
+    background-color: #d35400;
+}
+#image-loader {
+    display: none;
+}
+.btn {
+    background-color: #7f8c8d;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn:hover {
+    background-color: #95a5a6;
+}
+.btn.active {
+    background-color: #2980b9;
+    box-shadow: 0 0 8px rgba(41,128,185,0.5);
+}
+.image-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border: 2px dashed #bdc3c7;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+#display-image, #webcam-video {
+    max-width: 100%;
+    max-height: 600px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: filter 0.3s ease;
+}
+.placeholder-text {
+    color: #7f8c8d;
+    font-size: 18px;
+    font-weight: bold;
+}
+.protanopia {
+    filter: url(#filter-protanopia);
+    -webkit-filter: url(#filter-protanopia);
+}
+.deuteranopia {
+    filter: url(#filter-deuteranopia);
+    -webkit-filter: url(#filter-deuteranopia);
+}
+.normal {
+    filter: none;
+    -webkit-filter: none;
+}
+#camera-controls {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+</style>
 </head>
 <body>
 
-  <div class="control-panel">
-    <h2>紅綠色盲圖片檢測系統</h2>
-    
+<div class="control-panel">
+    <h2>紅綠色盲圖片/鏡頭檢測系統</h2>
     <div class="upload-box">
-      <label for="image-loader" class="file-input-label">點擊此處上傳圖片</label>
-      <input type="file" id="image-loader" accept="image/*" onchange="loadImage(event)">
+        <label for="image-loader" class="file-input-label">上傳圖片</label>
+        <input type="file" id="image-loader" accept="image/*" onchange="loadImage(event)">
+        <button class="file-input-label btn-camera" id="btn-toggle-camera" onclick="toggleCamera()">開啟鏡頭</button>
     </div>
-
+    
     <div style="margin-top: 15px;">
-      <button class="btn active" onclick="switchVision('normal', this)">正常視覺</button>
-      <button class="btn" onclick="switchVision('protanopia', this)">紅色色盲</button>
-      <button class="btn" onclick="switchVision('deuteranopia', this)">綠色色盲</button>
+        <button class="btn active" onclick="switchVision('normal', this)">正常視覺</button>
+        <button class="btn" onclick="switchVision('protanopia', this)">紅色色盲</button>
+        <button class="btn" onclick="switchVision('deuteranopia', this)">綠色色盲</button>
     </div>
-  </div>
+</div>
 
-  <div class="image-container" id="container">
-    <div class="placeholder-text" id="placeholder">請先點選上方按鈕，上傳您的圖片</div>
+<div class="image-container" id="container">
+    <div class="placeholder-text" id="placeholder">請選擇上傳圖片或開啟鏡頭</div>
+    
+    <video id="webcam-video" autoplay playsinline style="display: none;"></video>
+    
+    <div id="camera-controls" style="display: none;">
+        <button class="btn" style="background-color: #e74c3c;" onclick="takeSnapshot()">📸 拍攝照片</button>
+    </div>
+    
     <img id="display-image" src="" alt="檢測圖片" style="display: none;">
-  </div>
+</div>
 
-  <p class="hint-text">（本網頁由標準 HTML5/CSS3/JavaScript 開發）</p>
+<canvas id="snapshot-canvas" style="display: none;"></canvas>
 
-  <script type="text/javascript">
-    function loadImage(event) {
-      var files = event.target.files;
-      if (!files || files.length === 0) return;
-
-      var reader = new FileReader();
-      reader.onload = function() {
-        var output = document.getElementById('display-image');
-        var placeholder = document.getElementById('placeholder');
-        
-        output.src = reader.result;
-        output.style.display = 'block';
-        placeholder.style.display = 'none';
-      }
-      reader.readAsDataURL(files[0]);
-      
-     
-      event.target.value = '';
-    }
-
-    function switchVision(visionType, buttonElement) {
-      var image = document.getElementById('display-image');
-      image.className = '';
-      if (visionType !== 'normal') {
-        image.className = visionType;
-      }
-      var buttons = document.getElementsByClassName('btn');
-      for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove('active');
-      }
-      buttonElement.classList.add('active');
-    }
-  </script>
-
-  
-  <svg xmlns="http://w3.org" style="display: none;">
+<svg xmlns="http://w3.org" style="display: none;">
     <filter id="filter-protanopia">
-      <feColorMatrix type="matrix" values="0.567, 0.433, 0,     0, 0
-                                           0.558, 0.442, 0,     0, 0
-                                           0,     0.242, 0.758, 0, 0
-                                           0,     0,     0,     1, 0" />
+        <feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0  0.558, 0.442, 0, 0, 0  0, 0.242, 0.758, 0, 0  0, 0, 0, 1, 0" />
     </filter>
     <filter id="filter-deuteranopia">
-      <feColorMatrix type="matrix" values="0.625, 0.375, 0,     0, 0
-                                           0.700, 0.300, 0,     0, 0
-                                           0,     0.300, 0.700, 0, 0
-                                           0,     0,     0,     1, 0" />
+        <feColorMatrix type="matrix" values="0.625, 0.375, 0, 0, 0  0.700, 0.300, 0, 0, 0  0, 0.300, 0.700, 0, 0  0, 0, 0, 1, 0" />
     </filter>
-  </svg>
+</svg>
+
+<script type="text/javascript">
+var localStream = null;
+var videoElement = document.getElementById('webcam-video');
+var imageElement = document.getElementById('display-image');
+var placeholder = document.getElementById('placeholder');
+var cameraControls = document.getElementById('camera-controls');
+var btnToggleCamera = document.getElementById('btn-toggle-camera');
+
+function loadImage(event) {
+    stopCamera();
+    var files = event.target.files;
+    if (!files || files.length === 0) return;
+    
+    var reader = new FileReader();
+    reader.onload = function() {
+        imageElement.src = reader.result;
+        imageElement.style.display = 'block';
+        placeholder.style.display = 'none';
+        videoElement.style.display = 'none';
+    }
+    reader.readAsDataURL(files[0]);
+    event.target.value = '';
+}
+
+function toggleCamera() {
+    if (localStream) {
+        stopCamera();
+    } else {
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
+        .then(function(stream) {
+            localStream = stream;
+            videoElement.srcObject = stream;
+            videoElement.style.display = 'block';
+            cameraControls.style.display = 'block';
+            imageElement.style.display = 'none';
+            placeholder.style.display = 'none';
+            btnToggleCamera.innerText = "關閉鏡頭";
+            btnToggleCamera.style.backgroundColor = "#7f8c8d";
+        })
+        .catch(function(err) {
+            alert("無法啟動鏡頭，請確認權限。");
+        });
+    }
+}
+
+function stopCamera() {
+    if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+        localStream = null;
+    }
+    videoElement.style.display = 'none';
+    cameraControls.style.display = 'none';
+    btnToggleCamera.innerText = "開啟鏡頭";
+    btnToggleCamera.style.backgroundColor = "#e67e22";
+}
+
+function takeSnapshot() {
+    if (!localStream) return;
+    var canvas = document.getElementById('snapshot-canvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+    imageElement.src = canvas.toDataURL('image/jpeg');
+    imageElement.style.display = 'block';
+    stopCamera();
+}
+
+function switchVision(visionType, buttonElement) {
+    imageElement.className = '';
+    videoElement.className = '';
+    if (visionType !== 'normal') {
+        imageElement.className = visionType;
+        videoElement.className = visionType;
+    }
+    var buttons = document.getElementsByClassName('btn');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('active');
+    }
+    buttonElement.classList.add('active');
+}
+</script>
 
 </body>
 </html>
